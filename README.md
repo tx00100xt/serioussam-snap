@@ -25,7 +25,7 @@
 
    
   SeriouSamClassic is a family of enhanced ports of the Serious-Engine for running on modern operating systems.
-  It runs on Windows, Linux, FreeBSD, OpenBSD, NetBSD and OS X, and adds new features not found in the games as originally
+  It runs on Windows, Linux, FreeBSD, OpenBSD, NetBSD, macOS and adds new features not found in the games as originally
   published by Croteam.
 
 ## Version
