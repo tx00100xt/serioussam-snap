@@ -1,7 +1,7 @@
 name: serioussam
 base: core22
 version: '1.10.6d'
-summary: Serious-Engine Source Port with Vulkan Support
+summary: Serious-Engine Source Port
 description: |
   SeriouSamClassic is a family of enhanced ports of the Serious-Engine for running on modern operating systems.
   It runs on Windows, Linux, FreeBSD, OpenBSD, NetBSD and OS X, and adds new features not found in the games as originally
@@ -30,6 +30,11 @@ license: "GPL-2.0"
 source-code: "https://github.com/tx00100xt/SeriousSamClassic"
 grade: stable
 confinement: strict
+architectures:
+  - build-on: amd64
+  - build-on: armhf
+  - build-on: arm64
+  - build-on: ppc64el
   
 apps:
   serioussam:
@@ -37,7 +42,8 @@ apps:
       LD_LIBRARY_PATH: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET/pulseaudio:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET/alsa-lib:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET
       XKB_CONFIG_ROOT: $SNAP/usr/share/X11/xkb  
       ALWAYS_USE_PULSEAUDIO: '1'
-    command: usr/bin/serioussam
+      SDL_AUDIODRIVER: pulse
+    command: wrapper serioussam
     desktop: usr/share/applications/serioussam.desktop
     command-chain:
     - bin/graphics-core22-wrapper
@@ -49,7 +55,8 @@ apps:
       LD_LIBRARY_PATH: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET/pulseaudio:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET/alsa-lib:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET
       XKB_CONFIG_ROOT: $SNAP/usr/share/X11/xkb
       ALWAYS_USE_PULSEAUDIO: '1'
-    command: usr/bin/serioussamse
+      SDL_AUDIODRIVER: pulse
+    command: wrapper serioussam.se
     desktop: usr/share/applications/serioussamse.desktop
     command-chain:
     - bin/graphics-core22-wrapper
@@ -93,12 +100,10 @@ parts:
       - -DCMAKE_BUILD_TYPE=Release
       - -DCMAKE_INSTALL_PREFIX=/usr
     build-packages:
-      - nasm
       - bison
       - flex
       - make
-      - cmake
-      - build-essential      
+      - build-essential
       - libsdl2-dev
       - zlib1g-dev
       - libvorbis-dev
@@ -107,11 +112,12 @@ parts:
       - libsdl2-2.0-0
       - libwayland-client0
       - libvorbisfile3
+      - libasound2
       - libpulse0
       - zlib1g
-      
+
   xplus:
-    after: [ serioussam ]  
+    after: [ serioussam ]
     source: https://github.com/tx00100xt/SeriousSamClassic.git
     source-tag: '1.10.6d'
     override-pull: |
@@ -123,12 +129,10 @@ parts:
       - -DCMAKE_INSTALL_PREFIX=/usr
       - -DXPLUS=TRUE
     build-packages:
-      - nasm
       - bison
       - flex
       - make
-      - cmake
-      - build-essential      
+      - build-essential
       - libsdl2-dev
       - zlib1g-dev
       - libvorbis-dev
@@ -137,6 +141,7 @@ parts:
       - libsdl2-2.0-0
       - libwayland-client0
       - libvorbisfile3
+      - libasound2
       - libpulse0
       - zlib1g
 
@@ -148,7 +153,7 @@ parts:
       craftctl default
       ${CRAFT_PART_SRC}/bin/graphics-core22-cleanup mesa-core22 nvidia-core22
     prime:
-    - bin/graphics-core22-wrapper   
+    - bin/graphics-core22-wrapper
 
   alsa-mixin:
     plugin: dump
@@ -180,4 +185,8 @@ parts:
       - usr/lib/$SNAPCRAFT_ARCH_TRIPLET/libsamplerate*
       - usr/lib/$SNAPCRAFT_ARCH_TRIPLET/libspeex*
       - usr/lib/$SNAPCRAFT_ARCH_TRIPLET/libvorbis*
-      - usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pulseaudio  
+      - usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pulseaudio
+
+  scripts:
+    plugin: dump
+    source: scripts
