@@ -1,6 +1,6 @@
 name: serioussam
 base: core22
-version: '1.10.6d'
+version: '1.10.7'
 summary: Serious-Engine Source Port
 description: |
   SeriouSamClassic is a family of enhanced ports of the Serious-Engine for running on modern operating systems.
@@ -89,7 +89,7 @@ parts:
   serioussam:
     after: [alsa-mixin]
     source: https://github.com/tx00100xt/SeriousSamClassic.git
-    source-tag: '1.10.6d'
+    source-tag: '1.10.7'
     override-pull: |
       snapcraftctl pull
       patch -p1 -d $SNAPCRAFT_PART_SRC < $SNAPCRAFT_PROJECT_DIR/snap/local/0001-CMakeLists.txt.patch
@@ -119,7 +119,7 @@ parts:
   xplus:
     after: [ serioussam ]
     source: https://github.com/tx00100xt/SeriousSamClassic.git
-    source-tag: '1.10.6d'
+    source-tag: '1.10.7'
     override-pull: |
       snapcraftctl pull
       patch -p1 -d $SNAPCRAFT_PART_SRC < $SNAPCRAFT_PROJECT_DIR/snap/local/0001-CMakeLists.txt.patch
